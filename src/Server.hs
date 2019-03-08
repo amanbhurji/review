@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeOperators #-}
 
 module Server where
@@ -19,4 +20,4 @@ app1 :: Application
 app1 = serve reviewAPI server1
 
 pastes1 :: [Paste]
-pastes1 = undefined
+pastes1 = [newPaste "This is a paste!"]
