@@ -13,7 +13,7 @@ import Servant
 
 type ReviewAPI2 = "paste" :> ReqBody '[JSON] T.Text :> Post '[JSON] PasteId
       :<|> "paste" :> Capture "id" PasteId :> Get '[JSON] Paste
-      :<|> "paste" :> Capture "id" PasteId :> "comment" :> ReqBody '[JSON] T.Text :> Post '[JSON] PasteId
+      :<|> "paste" :> Capture "id" PasteId :> "comment" :> QueryParam "line" Int :> ReqBody '[JSON] T.Text :> Post '[JSON] PasteId
 
 -- server1 :: Server ReviewAPI1
 -- server1 = return pastes1
@@ -29,8 +29,8 @@ server2 = newpaste
         getpaste = return . getPaste
 
         -- | Update this to handle line comments and file comments. Possible api change required
-        newcomment :: PasteId -> T.Text -> Handler PasteId
-        newcomment pid comment = return $ pasteId (newFileComment comment (getPaste pid))
+        newcomment :: PasteId -> Maybe Int -> T.Text -> Handler PasteId
+        newcomment pid linenumber comment = return $ pasteId (newComment comment (fmap LineNumber linenumber) (getPaste pid))
 
 -- reviewAPI1 :: Proxy ReviewAPI1
 -- reviewAPI1 = Proxy

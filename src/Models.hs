@@ -4,10 +4,11 @@
 module Models 
   ( Paste
   , PasteId
-  , LineNumber
+  -- make a smart constructor which only creates LineNumbers for lines
+  -- that exist in a Paste instead of exposing this constructor
+  , LineNumber(..) 
   , newPaste
-  , newFileComment
-  , newLineComment
+  , newComment
   , pasteId
   ) where
 
@@ -45,3 +46,10 @@ newFileComment = undefined
 
 newLineComment :: T.Text -> LineNumber -> Paste -> Paste
 newLineComment = undefined
+
+newComment :: T.Text -> Maybe LineNumber -> Paste -> Paste
+newComment comment maybeLineNumber paste =
+  Paste (_content paste) (newComment': (_comments paste)) (_id paste)
+    where
+      newComment' = Comment comment anchor
+      anchor = maybe TopLevel Line maybeLineNumber
