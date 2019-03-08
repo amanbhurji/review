@@ -3,7 +3,7 @@
 ## API
 
 ```
-POST  /                   create a new paste
+POST  /paste              create a new paste
 
 GET   /paste/:id          get a paste
 

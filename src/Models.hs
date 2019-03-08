@@ -8,6 +8,7 @@ module Models
   , newPaste
   , newFileComment
   , newLineComment
+  , pasteId
   ) where
 
 import Data.Aeson
@@ -33,8 +34,8 @@ data Anchor = TopLevel | Line LineNumber deriving (Eq, Show, Generic, ToJSON)
 
 newtype LineNumber = LineNumber Int deriving (Eq, Show, Generic, ToJSON)
 
-id :: Paste -> PasteId
-id = _id
+pasteId :: Paste -> PasteId
+pasteId = _id
 
 newPaste :: T.Text -> Paste
 newPaste = undefined
