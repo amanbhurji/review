@@ -28,6 +28,7 @@ server2 = newpaste
         getpaste :: PasteId -> Handler Paste
         getpaste = return . getPaste
 
+        -- | Update this to handle line comments and file comments. Possible api change required
         newcomment :: PasteId -> T.Text -> Handler PasteId
         newcomment pid comment = return $ pasteId (newFileComment comment (getPaste pid))
 
