@@ -15,7 +15,7 @@ import Servant
 -- type ReviewAPI1 = "pastes" :> Get '[JSON] [Paste]
 
 type ReviewAPI2 = "paste" :> ReqBody '[JSON] T.Text :> Post '[JSON] PasteId
-      :<|> "paste" :> Capture "id" PasteId :> Get '[JSON] Paste
+      :<|> "paste" :> Capture "id" PasteId :> Get '[JSON] (Maybe Paste)
       :<|> "paste" :> Capture "id" PasteId :> "comment" :> QueryParam "line" Int :> ReqBody '[JSON] T.Text :> Post '[JSON] NoContent
 
 -- server1 :: Server ReviewAPI1
@@ -29,17 +29,19 @@ server2 db = newpaste
       --   newpaste content = return $ pasteId newone
       --     where newone = newPaste content
         newpaste content = do
-            C.liftIO $ Db.writeToDb newone db
-            return $ pasteId newone
-            where newone = newPaste content
+          C.liftIO $ Db.writeToDb db newone
+          return $ pasteId newone
+          where newone = newPaste content
 
-        getpaste :: PasteId -> Handler Paste
-        getpaste = return . getPaste
+        getpaste :: PasteId -> Handler (Maybe Paste)
+        getpaste pId = C.liftIO $ getPaste pId db
 
         -- | Update this to handle line comments and file comments. Possible api change required
         newcomment :: PasteId -> Maybe Int -> T.Text -> Handler NoContent
-        newcomment pid linenumber comment =
-          return (newComment comment (fmap LineNumber linenumber) (getPaste pid)) $> NoContent
+        newcomment pId linenumber comment = do
+          maybePaste <- C.liftIO $ getPaste pId db
+          let maybeUpdatedPaste = newComment comment (fmap LineNumber linenumber) <$> maybePaste
+          return (Db.writeToDb db <$> maybeUpdatedPaste) $> NoContent
 
 -- reviewAPI1 :: Proxy ReviewAPI1
 -- reviewAPI1 = Proxy
@@ -58,5 +60,5 @@ app2 db = serve reviewAPI2 $ server2 db
 
 -- | Does lookup in some global state for `Paste`s
 --   This signature will likely change
-getPaste :: PasteId -> Paste
-getPaste = undefined
+getPaste :: PasteId -> Db.Db -> IO (Maybe Paste)
+getPaste pId = Db.lookupPaste pId pasteId
