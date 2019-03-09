@@ -23,7 +23,8 @@ server2 = newpaste
      :<|> getpaste
      :<|> newcomment
   where newpaste :: T.Text -> Handler PasteId
-        newpaste content = return $ pasteId (newPaste content)
+        newpaste content = return $ pasteId (newone) 
+            where newone = newPaste content
 
         getpaste :: PasteId -> Handler Paste
         getpaste = return . getPaste
@@ -44,8 +45,8 @@ reviewAPI2 = Proxy
 app2 :: Application
 app2 = serve reviewAPI2 server2
 
-pastes1 :: [Paste]
-pastes1 = [newPaste "This is a paste!"]
+-- pastes1 :: [Paste]
+-- pastes1 = [newPaste "This is a paste!"]
 
 -- | Does lookup in some global state for `Paste`s
 --   This signature will likely change
