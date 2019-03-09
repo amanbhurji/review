@@ -2,6 +2,7 @@ module Db where
 
 import qualified Data.Maybe as Maybe    
 import qualified Data.IORef as I
+import Data.Foldable (find)
 import Models
 
 newtype Db = Db { allPastes :: I.IORef [Paste] }
@@ -28,3 +29,10 @@ findFirst :: (Eq s, Eq t) => s -> (t -> s) -> [t] -> Maybe t
 findFirst _ _ [] = Nothing
 findFirst s f ts = foldl f' Nothing ts
   where f' acc t' = if Maybe.isNothing acc && (f t' == s) then Just t' else acc
+
+findFirst' :: Eq s => s -> (t -> s) -> [t] -> Maybe t
+findFirst' s f ts = lookup s (zip (f <$> ts) ts)
+
+findFirst'' :: (Eq s, Foldable m) =>
+  s -> (t -> s) -> m t -> Maybe t
+findFirst'' s f = find ((s ==) . f)

@@ -1,5 +1,4 @@
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeOperators #-}
 
 module Server where
@@ -29,14 +28,13 @@ server2 db = newpaste
       --   newpaste content = return $ pasteId newone
       --     where newone = newPaste content
         newpaste content = do
-          C.liftIO $ Db.writeToDb db newone
-          return $ pasteId newone
-          where newone = newPaste content
+          p <- C.liftIO $ newPaste content
+          C.liftIO $ Db.writeToDb db p
+          pure $ pasteId p
 
         getpaste :: PasteId -> Handler (Maybe Paste)
         getpaste pId = C.liftIO $ getPaste pId db
 
-        -- | Update this to handle line comments and file comments. Possible api change required
         newcomment :: PasteId -> Maybe Int -> T.Text -> Handler NoContent
         newcomment pId linenumber comment = do
           maybePaste <- C.liftIO $ getPaste pId db

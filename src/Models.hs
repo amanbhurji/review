@@ -12,6 +12,8 @@ module Models
   , pasteId
   ) where
 
+import qualified Data.UUID as DU
+import Data.UUID.V4 (nextRandom)
 import Data.Aeson
 import qualified Data.Text as T
 import GHC.Generics
@@ -22,7 +24,7 @@ data Paste = Paste
   , _id       :: PasteId
   } deriving (Eq, Show, Generic, ToJSON)
 
-type PasteId = Int -- use a better type 
+type PasteId = DU.UUID
 
 newtype Content = Content T.Text deriving (Eq, Show, Generic, ToJSON)
 
@@ -38,18 +40,13 @@ newtype LineNumber = LineNumber Int deriving (Eq, Show, Generic, ToJSON)
 pasteId :: Paste -> PasteId
 pasteId = _id
 
-newPaste :: T.Text -> Paste
-newPaste = undefined
-
-newFileComment :: T.Text -> Paste -> Paste
-newFileComment = undefined
-
-newLineComment :: T.Text -> LineNumber -> Paste -> Paste
-newLineComment = undefined
+newPaste :: T.Text -> IO Paste
+newPaste content = Paste (Content content) [] <$> pId
+  where pId = nextRandom
 
 newComment :: T.Text -> Maybe LineNumber -> Paste -> Paste
 newComment comment maybeLineNumber paste =
-  Paste (_content paste) (newComment': (_comments paste)) (_id paste)
+  Paste (_content paste) (newComment' : _comments paste) (_id paste)
     where
       newComment' = Comment comment anchor
       anchor = maybe TopLevel Line maybeLineNumber
