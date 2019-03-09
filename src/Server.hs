@@ -25,7 +25,7 @@ type ReviewAPI2 = "paste" :> ReqBody '[JSON] T.Text :> Post '[JSON] PasteId
 server2 :: Db.Db -> Server ReviewAPI2
 server2 db = newpaste
      :<|> getpaste
-     :<|> newcomment
+     :<|> newcomment2
      :<|> getAllPastes
   where newpaste :: T.Text -> Handler PasteId
       --   newpaste content = return $ pasteId newone
@@ -38,11 +38,20 @@ server2 db = newpaste
         getpaste :: PasteId -> Handler (Maybe Paste)
         getpaste pId = C.liftIO $ getPasteFromDb pId db
 
+        -- Doesnt work but compiles
         newcomment :: PasteId -> Maybe Int -> T.Text -> Handler NoContent
-        newcomment pId linenumber comment = do
-          maybePaste <- C.liftIO $ getPasteFromDb (trace ("pid: " <> show pId) pId) db
-          let maybeUpdatedPaste = newComment comment (fmap LineNumber linenumber) <$> (trace ("paste:" <> show maybePaste) maybePaste)
+        newcomment pId _ commenttxt = do
+          maybePaste <- C.liftIO $ getPasteFromDb pId db
+          let maybeUpdatedPaste = newComment commenttxt Nothing <$> (trace ("paste:" <> show maybePaste) maybePaste)
           return (Db.writeToDb db <$> maybeUpdatedPaste) $> NoContent
+
+        -- Works!!
+        newcomment2 :: PasteId -> Maybe Int -> T.Text -> Handler NoContent
+        newcomment2 pId lno commenttxt = do
+          maybePaste <- C.liftIO $ getPasteFromDb pId db
+          let maybeUpdatedPaste = newComment commenttxt (fmap LineNumber lno) <$> maybePaste
+          C.liftIO $ traverse (Db.writeToDb db) maybeUpdatedPaste
+          return NoContent
 
         getAllPastes :: Handler [Paste]
         getAllPastes = C.liftIO $ Db.debugGetAllDb db
