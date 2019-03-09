@@ -20,19 +20,14 @@ lookupPaste t f (Db all)= do
   all' <- I.readIORef all
   pure $ findFirst t f all'
 
+debugGetAllDb :: Db -> IO [Paste]
+debugGetAllDb (Db all) = I.readIORef all
+
 debugShowDb :: Db -> IO ()
-debugShowDb (Db all) = do
-  all' <- I.readIORef all
-  print all'
+debugShowDb db = do
+  all <- debugGetAllDb db
+  print all
 
-findFirst :: (Eq s, Eq t) => s -> (t -> s) -> [t] -> Maybe t
-findFirst _ _ [] = Nothing
-findFirst s f ts = foldl f' Nothing ts
-  where f' acc t' = if Maybe.isNothing acc && (f t' == s) then Just t' else acc
-
-findFirst' :: Eq s => s -> (t -> s) -> [t] -> Maybe t
-findFirst' s f ts = lookup s (zip (f <$> ts) ts)
-
-findFirst'' :: (Eq s, Foldable m) =>
+findFirst :: (Eq s, Foldable m) =>
   s -> (t -> s) -> m t -> Maybe t
-findFirst'' s f = find ((s ==) . f)
+findFirst s f = find ((s ==) . f)
