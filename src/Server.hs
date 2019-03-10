@@ -1,16 +1,16 @@
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE DataKinds      #-}
+{-# LANGUAGE TypeOperators  #-}
 
 module Server where
 
-import Data.Aeson
-import Data.Functor
-import Data.Foldable
-import qualified Control.Monad.IO.Class as C
-import qualified Data.Text as T
+import           Data.Aeson
+import           Data.Functor
+import           Data.Foldable
+import qualified Control.Monad.IO.Class        as C
+import qualified Data.Text                     as T
 import qualified Db
-import Models
-import Servant
+import           Models
+import           Servant
 
 type ReviewAPI2 = "paste" :> ReqBody '[JSON] T.Text :> Post '[JSON] PasteId
       :<|> "paste" :> Capture "id" PasteId :> Get '[JSON] (Maybe Paste)

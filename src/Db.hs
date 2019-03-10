@@ -1,9 +1,9 @@
 module Db where
 
-import qualified Data.Maybe as Maybe    
-import qualified Data.IORef as I
-import Data.Foldable (find)
-import Models
+import qualified Data.Maybe                    as Maybe
+import qualified Data.IORef                    as I
+import           Data.Foldable                  ( find )
+import           Models
 
 newtype Db = Db { allPastes :: I.IORef [Paste] }
 
@@ -13,10 +13,10 @@ makeDb init = do
   pure (Db iref)
 
 writeToDb :: Db -> Paste -> IO ()
-writeToDb (Db all) p = I.modifyIORef all (p:)
+writeToDb (Db all) p = I.modifyIORef all (p :)
 
 lookupPaste :: Eq t => t -> (Paste -> t) -> Db -> IO (Maybe Paste)
-lookupPaste t f (Db all)= do
+lookupPaste t f (Db all) = do
   all' <- I.readIORef all
   pure $ findFirst t f all'
 
