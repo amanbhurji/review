@@ -25,9 +25,42 @@ curl -X POST -d '"This is a line comment!"' -H 'Accept: application/json' -H 'Co
 
 ```
 
-### Sample json output
+### Sample response to `/paste/:id`
 ```json
-https://hastebin.com/raw/cifujujoqu
-
-IT WONT LET ME PASTE PREFORMATTED JSON IN HERE!
+{
+  "id": "f2dee7b5-624f-4248-a190-a1584daf9a5c",
+  "lines": [
+    {
+      "line": "This is a posted paste!",
+      "comments": []
+    },
+    {
+      "line": "Newline?",
+      "comments": [
+        {
+          "body": "This is a line comment!"
+        }
+      ]
+    },
+    {
+      "line": "Another?",
+      "comments": [
+        {
+          "body": "This is yet another line comment!"
+        },
+        {
+          "body": "This is another line comment!"
+        }
+      ]
+    }
+  ],
+  "comments": [
+    {
+      "body": "This is another toplevel comment!"
+    },
+    {
+      "body": "This is a toplevel comment!"
+    }
+  ]
+}
 ```
