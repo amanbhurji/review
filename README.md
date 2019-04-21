@@ -24,3 +24,10 @@ curl -X POST -d '"This is a top level comment!"' -H 'Accept: application/json' -
 curl -X POST -d '"This is a line comment!"' -H 'Accept: application/json' -H 'Content-type: application/json' http://localhost:8081/paste/<pId>/comment?line=3
 
 ```
+
+### Sample json output
+```json
+https://hastebin.com/raw/cifujujoqu
+
+IT WONT LET ME PASTE PREFORMATTED JSON IN HERE!
+```

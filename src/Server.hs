@@ -15,11 +15,13 @@ import           Servant
 type ReviewAPI2 = "paste" :> ReqBody '[JSON] T.Text :> Post '[JSON] PasteId
       :<|> "paste" :> Capture "id" PasteId :> Get '[JSON] (Maybe Paste)
       :<|> "paste" :> Capture "id" PasteId :> "comment" :> QueryParam "line" Int :> ReqBody '[JSON] T.Text :> Post '[JSON] NoContent
+      :<|> "pages" :> Raw
 
 server2 :: Db.Db -> Server ReviewAPI2
 server2 db = newpaste
      :<|> getpaste
      :<|> newcomment
+     :<|> staticpages
   where newpaste :: T.Text -> Handler PasteId
         newpaste content = do
           p <- C.liftIO $ newPaste content
@@ -36,6 +38,8 @@ server2 db = newpaste
           let x = traverse_ (Db.writeToDb db) maybeUpdatePaste -- traverse_ because no meaningful value is produced
           C.liftIO x
           return NoContent
+
+        staticpages = serveDirectoryWebApp "pages"
 
 reviewAPI2 :: Proxy ReviewAPI2
 reviewAPI2 = Proxy
