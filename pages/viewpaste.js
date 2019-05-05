@@ -4485,6 +4485,9 @@ function _Browser_load(url)
 		}
 	}));
 }
+var author$project$ViewPaste$ClickedLink = function (a) {
+	return {$: 'ClickedLink', a: a};
+};
 var author$project$ViewPaste$Loading = {$: 'Loading'};
 var author$project$ViewPaste$GotPaste = function (a) {
 	return {$: 'GotPaste', a: a};
@@ -5005,9 +5008,6 @@ var author$project$ViewPaste$pasteDecoder = A4(
 		'comments',
 		elm$json$Json$Decode$list(author$project$ViewPaste$commentDecoder)),
 	A2(elm$json$Json$Decode$field, 'id', elm$json$Json$Decode$string));
-var elm$core$Basics$identity = function (x) {
-	return x;
-};
 var elm$core$Result$mapError = F2(
 	function (f, result) {
 		if (result.$ === 'Ok') {
@@ -5024,6 +5024,9 @@ var elm$core$Basics$composeR = F3(
 		return g(
 			f(x));
 	});
+var elm$core$Basics$identity = function (x) {
+	return x;
+};
 var elm$core$Dict$RBEmpty_elm_builtin = {$: 'RBEmpty_elm_builtin'};
 var elm$core$Dict$empty = elm$core$Dict$RBEmpty_elm_builtin;
 var elm$core$Basics$compare = _Utils_compare;
@@ -5975,13 +5978,6 @@ var author$project$ViewPaste$onUrlChange = function (url) {
 			elm$http$Http$BadUrl(
 				'You cant change the url! ' + elm$url$Url$toString(url))));
 };
-var elm$core$Debug$toString = _Debug_toString;
-var author$project$ViewPaste$onUrlRequest = function (url) {
-	return author$project$ViewPaste$GotPaste(
-		elm$core$Result$Err(
-			elm$http$Http$BadUrl(
-				'You cant request a url! ' + elm$core$Debug$toString(url))));
-};
 var elm$core$Platform$Sub$batch = _Platform_batch;
 var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
 var author$project$ViewPaste$subscriptions = function (model) {
@@ -5993,262 +5989,295 @@ var author$project$ViewPaste$Failure = function (a) {
 var author$project$ViewPaste$Success = function (a) {
 	return {$: 'Success', a: a};
 };
-var elm$core$Platform$Cmd$batch = _Platform_batch;
-var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
-var author$project$ViewPaste$update = F2(
-	function (msg, model) {
-		var result = msg.a;
-		if (result.$ === 'Ok') {
-			var paste = result.a;
-			return _Utils_Tuple2(
-				author$project$ViewPaste$Success(paste),
-				elm$core$Platform$Cmd$none);
-		} else {
-			var err = result.a;
-			return _Utils_Tuple2(
-				author$project$ViewPaste$Failure(
-					elm$core$Debug$toString(err)),
-				elm$core$Platform$Cmd$none);
+var author$project$ViewPaste$lineNumForAnchor = function (_n0) {
+	var n = _n0.a;
+	return n;
+};
+var elm$core$List$drop = F2(
+	function (n, list) {
+		drop:
+		while (true) {
+			if (n <= 0) {
+				return list;
+			} else {
+				if (!list.b) {
+					return list;
+				} else {
+					var x = list.a;
+					var xs = list.b;
+					var $temp$n = n - 1,
+						$temp$list = xs;
+					n = $temp$n;
+					list = $temp$list;
+					continue drop;
+				}
+			}
 		}
 	});
-var elm$json$Json$Decode$succeed = _Json_succeed;
-var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
-	switch (handler.$) {
-		case 'Normal':
-			return 0;
-		case 'MayStopPropagation':
-			return 1;
-		case 'MayPreventDefault':
-			return 2;
-		default:
-			return 3;
+var elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return elm$core$Maybe$Just(x);
+	} else {
+		return elm$core$Maybe$Nothing;
 	}
 };
-var elm$html$Html$a = _VirtualDom_node('a');
-var elm$html$Html$td = _VirtualDom_node('td');
-var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
-var elm$html$Html$th = _VirtualDom_node('th');
-var elm$html$Html$tr = _VirtualDom_node('tr');
-var elm$json$Json$Encode$string = _Json_wrap;
-var elm$html$Html$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			elm$json$Json$Encode$string(string));
-	});
-var elm$html$Html$Attributes$href = function (url) {
-	return A2(
-		elm$html$Html$Attributes$stringProperty,
-		'href',
-		_VirtualDom_noJavaScriptUri(url));
+var elm$core$List$singleton = function (value) {
+	return _List_fromArray(
+		[value]);
 };
-var author$project$ViewPaste$viewLine = F2(
-	function (lno, line) {
-		var lno_str = elm$core$String$fromInt(lno);
-		return A2(
-			elm$html$Html$tr,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$th,
-					_List_Nil,
-					_List_fromArray(
-						[
-							A2(
-							elm$html$Html$a,
-							_List_fromArray(
-								[
-									elm$html$Html$Attributes$href('#' + lno_str)
-								]),
-							_List_fromArray(
-								[
-									elm$html$Html$text(lno_str)
-								]))
-						])),
-					A2(
-					elm$html$Html$td,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text(line)
-						]))
-				]));
-	});
-var elm$html$Html$div = _VirtualDom_node('div');
-var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
-var elm$html$Html$Attributes$colspan = function (n) {
-	return A2(
-		_VirtualDom_attribute,
-		'colspan',
-		elm$core$String$fromInt(n));
-};
-var author$project$ViewPaste$viewLineComment = function (comment) {
-	return A2(
-		elm$html$Html$tr,
-		_List_fromArray(
-			[
-				elm$html$Html$Attributes$class('bg-info')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				elm$html$Html$td,
-				_List_fromArray(
-					[
-						elm$html$Html$Attributes$colspan(2)
-					]),
-				_List_fromArray(
-					[
-						A2(
-						elm$html$Html$div,
-						_List_Nil,
-						_List_fromArray(
-							[
-								elm$html$Html$text(comment.body)
-							]))
-					]))
-			]));
-};
-var elm$core$List$map = F2(
-	function (f, xs) {
-		return A3(
-			elm$core$List$foldr,
-			F2(
-				function (x, acc) {
-					return A2(
-						elm$core$List$cons,
-						f(x),
-						acc);
-				}),
-			_List_Nil,
-			xs);
-	});
-var author$project$ViewPaste$viewLineWithComments = F2(
-	function (lno, lineWithComments) {
-		return A2(
-			elm$core$List$cons,
-			A2(author$project$ViewPaste$viewLine, lno, lineWithComments.line),
-			A2(elm$core$List$map, author$project$ViewPaste$viewLineComment, lineWithComments.lineComments));
-	});
-var elm$core$List$append = F2(
-	function (xs, ys) {
-		if (!ys.b) {
-			return xs;
-		} else {
-			return A3(elm$core$List$foldr, elm$core$List$cons, ys, xs);
+var elm$core$List$takeReverse = F3(
+	function (n, list, kept) {
+		takeReverse:
+		while (true) {
+			if (n <= 0) {
+				return kept;
+			} else {
+				if (!list.b) {
+					return kept;
+				} else {
+					var x = list.a;
+					var xs = list.b;
+					var $temp$n = n - 1,
+						$temp$list = xs,
+						$temp$kept = A2(elm$core$List$cons, x, kept);
+					n = $temp$n;
+					list = $temp$list;
+					kept = $temp$kept;
+					continue takeReverse;
+				}
+			}
 		}
 	});
-var elm$core$List$concat = function (lists) {
-	return A3(elm$core$List$foldr, elm$core$List$append, _List_Nil, lists);
-};
-var author$project$ViewPaste$viewPasteBody = function (lines) {
-	return elm$core$List$concat(
-		A2(elm$core$List$indexedMap, author$project$ViewPaste$viewLineWithComments, lines));
-};
-var elm$html$Html$table = _VirtualDom_node('table');
-var elm$html$Html$tbody = _VirtualDom_node('tbody');
-var elm$html$Html$thead = _VirtualDom_node('thead');
-var elm$html$Html$Attributes$id = elm$html$Html$Attributes$stringProperty('id');
-var elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
-var elm$html$Html$Attributes$style = elm$virtual_dom$VirtualDom$style;
-var author$project$ViewPaste$viewPaste = function (paste) {
-	return A2(
-		elm$html$Html$div,
-		_List_fromArray(
-			[
-				elm$html$Html$Attributes$id('paste_content'),
-				elm$html$Html$Attributes$class('table-responsive')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				elm$html$Html$table,
-				_List_fromArray(
-					[
-						elm$html$Html$Attributes$class('table table-dark table-sm'),
-						A2(elm$html$Html$Attributes$style, 'width', '100%')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						elm$html$Html$thead,
-						_List_Nil,
-						_List_fromArray(
-							[
-								A2(
-								elm$html$Html$tr,
-								_List_Nil,
-								_List_fromArray(
-									[
-										A2(
-										elm$html$Html$th,
-										_List_Nil,
-										_List_fromArray(
-											[
-												elm$html$Html$text('#')
-											])),
-										A2(
-										elm$html$Html$th,
-										_List_Nil,
-										_List_fromArray(
-											[
-												elm$html$Html$text('Paste')
-											]))
-									]))
-							])),
-						A2(
-						elm$html$Html$tbody,
-						_List_Nil,
-						author$project$ViewPaste$viewPasteBody(paste.lines))
-					]))
-			]));
-};
-var author$project$ViewPaste$view = function (model) {
-	return A2(
-		elm$html$Html$div,
-		_List_fromArray(
-			[
-				elm$html$Html$Attributes$class('container')
-			]),
-		_List_fromArray(
-			[
-				function () {
-				switch (model.$) {
-					case 'Failure':
-						var s = model.a;
-						return A2(
-							elm$html$Html$div,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Failed to load paste! - ' + s)
-								]));
-					case 'Loading':
-						return A2(
-							elm$html$Html$div,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Loading ...')
-								]));
-					default:
-						var paste = model.a;
-						return author$project$ViewPaste$viewPaste(paste);
+var elm$core$List$takeTailRec = F2(
+	function (n, list) {
+		return elm$core$List$reverse(
+			A3(elm$core$List$takeReverse, n, list, _List_Nil));
+	});
+var elm$core$List$takeFast = F3(
+	function (ctr, n, list) {
+		if (n <= 0) {
+			return _List_Nil;
+		} else {
+			var _n0 = _Utils_Tuple2(n, list);
+			_n0$1:
+			while (true) {
+				_n0$5:
+				while (true) {
+					if (!_n0.b.b) {
+						return list;
+					} else {
+						if (_n0.b.b.b) {
+							switch (_n0.a) {
+								case 1:
+									break _n0$1;
+								case 2:
+									var _n2 = _n0.b;
+									var x = _n2.a;
+									var _n3 = _n2.b;
+									var y = _n3.a;
+									return _List_fromArray(
+										[x, y]);
+								case 3:
+									if (_n0.b.b.b.b) {
+										var _n4 = _n0.b;
+										var x = _n4.a;
+										var _n5 = _n4.b;
+										var y = _n5.a;
+										var _n6 = _n5.b;
+										var z = _n6.a;
+										return _List_fromArray(
+											[x, y, z]);
+									} else {
+										break _n0$5;
+									}
+								default:
+									if (_n0.b.b.b.b && _n0.b.b.b.b.b) {
+										var _n7 = _n0.b;
+										var x = _n7.a;
+										var _n8 = _n7.b;
+										var y = _n8.a;
+										var _n9 = _n8.b;
+										var z = _n9.a;
+										var _n10 = _n9.b;
+										var w = _n10.a;
+										var tl = _n10.b;
+										return (ctr > 1000) ? A2(
+											elm$core$List$cons,
+											x,
+											A2(
+												elm$core$List$cons,
+												y,
+												A2(
+													elm$core$List$cons,
+													z,
+													A2(
+														elm$core$List$cons,
+														w,
+														A2(elm$core$List$takeTailRec, n - 4, tl))))) : A2(
+											elm$core$List$cons,
+											x,
+											A2(
+												elm$core$List$cons,
+												y,
+												A2(
+													elm$core$List$cons,
+													z,
+													A2(
+														elm$core$List$cons,
+														w,
+														A3(elm$core$List$takeFast, ctr + 1, n - 4, tl)))));
+									} else {
+										break _n0$5;
+									}
+							}
+						} else {
+							if (_n0.a === 1) {
+								break _n0$1;
+							} else {
+								break _n0$5;
+							}
+						}
+					}
 				}
-			}()
-			]));
+				return list;
+			}
+			var _n1 = _n0.b;
+			var x = _n1.a;
+			return _List_fromArray(
+				[x]);
+		}
+	});
+var elm$core$List$take = F2(
+	function (n, list) {
+		return A3(elm$core$List$takeFast, 0, n, list);
+	});
+var elm$core$Maybe$andThen = F2(
+	function (callback, maybeValue) {
+		if (maybeValue.$ === 'Just') {
+			var value = maybeValue.a;
+			return callback(value);
+		} else {
+			return elm$core$Maybe$Nothing;
+		}
+	});
+var elm$core$Maybe$map = F2(
+	function (f, maybe) {
+		if (maybe.$ === 'Just') {
+			var value = maybe.a;
+			return elm$core$Maybe$Just(
+				f(value));
+		} else {
+			return elm$core$Maybe$Nothing;
+		}
+	});
+var author$project$ViewPaste$moveCommentToPaste = function (root) {
+	var replace = F3(
+		function (xs, newN, n) {
+			return _Utils_ap(
+				A2(elm$core$List$take, n, xs),
+				A2(
+					elm$core$List$cons,
+					newN,
+					A2(elm$core$List$drop, n + 1, xs)));
+		});
+	var ogPaste = root.paste;
+	var newCommentAsList = A2(
+		elm$core$Maybe$withDefault,
+		_List_Nil,
+		A2(elm$core$Maybe$map, elm$core$List$singleton, root.newComment));
+	var lno = A2(elm$core$Maybe$map, author$project$ViewPaste$lineNumForAnchor, root.commentAnchor);
+	var get = F2(
+		function (xs, n) {
+			return elm$core$List$head(
+				A2(elm$core$List$drop, n, xs));
+		});
+	var lineToUpdate = A2(
+		elm$core$Maybe$andThen,
+		get(root.paste.lines),
+		lno);
+	var updatedLine = A2(
+		elm$core$Maybe$map,
+		function (x) {
+			return _Utils_update(
+				x,
+				{
+					lineComments: _Utils_ap(newCommentAsList, x.lineComments)
+				});
+		},
+		lineToUpdate);
+	var updatedPaste = A2(
+		elm$core$Maybe$andThen,
+		function (l) {
+			return A2(
+				elm$core$Maybe$map,
+				function (n) {
+					return _Utils_update(
+						ogPaste,
+						{
+							lines: A3(replace, ogPaste.lines, l, n)
+						});
+				},
+				lno);
+		},
+		updatedLine);
+	var newOrOg = A2(elm$core$Maybe$withDefault, ogPaste, updatedPaste);
+	return _Utils_update(
+		root,
+		{commentAnchor: elm$core$Maybe$Nothing, newComment: elm$core$Maybe$Nothing, paste: newOrOg});
 };
-var author$project$ViewPaste$viewDoc = function (model) {
-	return {
-		body: _List_fromArray(
-			[
-				author$project$ViewPaste$view(model)
-			]),
-		title: 'View paste'
-	};
+var author$project$ViewPaste$Commented = function (a) {
+	return {$: 'Commented', a: a};
+};
+var elm$http$Http$expectBytesResponse = F2(
+	function (toMsg, toResult) {
+		return A3(
+			_Http_expect,
+			'arraybuffer',
+			_Http_toDataView,
+			A2(elm$core$Basics$composeR, toResult, toMsg));
+	});
+var elm$http$Http$expectWhatever = function (toMsg) {
+	return A2(
+		elm$http$Http$expectBytesResponse,
+		toMsg,
+		elm$http$Http$resolve(
+			function (_n0) {
+				return elm$core$Result$Ok(_Utils_Tuple0);
+			}));
+};
+var elm$http$Http$post = function (r) {
+	return elm$http$Http$request(
+		{body: r.body, expect: r.expect, headers: _List_Nil, method: 'POST', timeout: elm$core$Maybe$Nothing, tracker: elm$core$Maybe$Nothing, url: r.url});
+};
+var elm$http$Http$stringBody = _Http_pair;
+var elm$json$Json$Encode$string = _Json_wrap;
+var author$project$ViewPaste$postComment = function (root) {
+	var lno = A2(elm$core$Maybe$map, author$project$ViewPaste$lineNumForAnchor, root.commentAnchor);
+	var qparam = A2(
+		elm$core$Maybe$map,
+		function (n) {
+			return '?line=' + elm$core$String$fromInt(n);
+		},
+		lno);
+	var pasteUrl = 'http://localhost:8081/paste/' + (root.paste.id + ('/comment' + A2(elm$core$Maybe$withDefault, '', qparam)));
+	return elm$http$Http$post(
+		{
+			body: A2(
+				elm$http$Http$stringBody,
+				'application/json',
+				A2(
+					elm$json$Json$Encode$encode,
+					0,
+					elm$json$Json$Encode$string(
+						A2(
+							elm$core$Maybe$withDefault,
+							{body: ''},
+							root.newComment).body))),
+			expect: elm$http$Http$expectWhatever(author$project$ViewPaste$Commented),
+			url: pasteUrl
+		});
 };
 var elm$browser$Browser$External = function (a) {
 	return {$: 'External', a: a};
@@ -6272,6 +6301,20 @@ var elm$core$Task$Perform = function (a) {
 	return {$: 'Perform', a: a};
 };
 var elm$core$Task$init = elm$core$Task$succeed(_Utils_Tuple0);
+var elm$core$List$map = F2(
+	function (f, xs) {
+		return A3(
+			elm$core$List$foldr,
+			F2(
+				function (x, acc) {
+					return A2(
+						elm$core$List$cons,
+						f(x),
+						acc);
+				}),
+			_List_Nil,
+			xs);
+	});
 var elm$core$Task$map = F2(
 	function (func, taskA) {
 		return A2(
@@ -6322,6 +6365,19 @@ var elm$core$Task$perform = F2(
 			elm$core$Task$Perform(
 				A2(elm$core$Task$map, toMessage, task)));
 	});
+var elm$json$Json$Decode$succeed = _Json_succeed;
+var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
+	switch (handler.$) {
+		case 'Normal':
+			return 0;
+		case 'MayStopPropagation':
+			return 1;
+		case 'MayPreventDefault':
+			return 2;
+		default:
+			return 3;
+	}
+};
 var elm$core$String$startsWith = _String_startsWith;
 var elm$url$Url$Http = {$: 'Http'};
 var elm$url$Url$Https = {$: 'Https'};
@@ -6441,8 +6497,490 @@ var elm$url$Url$fromString = function (str) {
 		elm$url$Url$Https,
 		A2(elm$core$String$dropLeft, 8, str)) : elm$core$Maybe$Nothing);
 };
+var elm$browser$Browser$Navigation$load = _Browser_load;
+var elm$core$Debug$toString = _Debug_toString;
+var elm$core$Debug$todo = _Debug_todo;
+var elm$core$Platform$Cmd$batch = _Platform_batch;
+var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
+var author$project$ViewPaste$update = F2(
+	function (msg, model) {
+		switch (msg.$) {
+			case 'ClickedLink':
+				var urlRequest = msg.a;
+				if (urlRequest.$ === 'Internal') {
+					var url = urlRequest.a;
+					var _n2 = url.fragment;
+					if (_n2.$ === 'Nothing') {
+						return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+					} else {
+						return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+					}
+				} else {
+					var href = urlRequest.a;
+					return _Utils_Tuple2(
+						model,
+						elm$browser$Browser$Navigation$load(href));
+				}
+			case 'GotPaste':
+				var result = msg.a;
+				if (result.$ === 'Ok') {
+					var paste = result.a;
+					return _Utils_Tuple2(
+						author$project$ViewPaste$Success(
+							{commentAnchor: elm$core$Maybe$Nothing, newComment: elm$core$Maybe$Nothing, paste: paste}),
+						elm$core$Platform$Cmd$none);
+				} else {
+					var err = result.a;
+					return _Utils_Tuple2(
+						author$project$ViewPaste$Failure(
+							elm$core$Debug$toString(err)),
+						elm$core$Platform$Cmd$none);
+				}
+			case 'NewComment':
+				var anchor = msg.a;
+				var lno = anchor.a;
+				if (model.$ === 'Success') {
+					var root = model.a;
+					return _Utils_Tuple2(
+						author$project$ViewPaste$Success(
+							_Utils_update(
+								root,
+								{
+									commentAnchor: elm$core$Maybe$Just(anchor)
+								})),
+						elm$core$Platform$Cmd$none);
+				} else {
+					return _Debug_todo(
+						'ViewPaste',
+						{
+							start: {line: 145, column: 18},
+							end: {line: 145, column: 28}
+						})(
+						'todo throw error ' + elm$core$Debug$toString(model));
+				}
+			case 'SetCommentData':
+				var s = msg.a;
+				if (model.$ === 'Success') {
+					var root = model.a;
+					return _Utils_Tuple2(
+						author$project$ViewPaste$Success(
+							_Utils_update(
+								root,
+								{
+									newComment: elm$core$Maybe$Just(
+										{body: s})
+								})),
+						elm$core$Platform$Cmd$none);
+				} else {
+					return _Debug_todo(
+						'ViewPaste',
+						{
+							start: {line: 153, column: 14},
+							end: {line: 153, column: 24}
+						})('todo throw error');
+				}
+			case 'MkComment':
+				if (model.$ === 'Success') {
+					var root = model.a;
+					return _Utils_Tuple2(
+						author$project$ViewPaste$Success(
+							author$project$ViewPaste$moveCommentToPaste(root)),
+						author$project$ViewPaste$postComment(root));
+				} else {
+					return _Debug_todo(
+						'ViewPaste',
+						{
+							start: {line: 166, column: 14},
+							end: {line: 166, column: 24}
+						})('todo throw error');
+				}
+			default:
+				var result = msg.a;
+				if (result.$ === 'Ok') {
+					if (model.$ === 'Success') {
+						var root = model.a;
+						return _Utils_Tuple2(
+							author$project$ViewPaste$Success(root),
+							elm$core$Platform$Cmd$none);
+					} else {
+						return _Debug_todo(
+							'ViewPaste',
+							{
+								start: {line: 182, column: 18},
+								end: {line: 182, column: 28}
+							})('todo posted comment');
+					}
+				} else {
+					return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+				}
+		}
+	});
+var author$project$ViewPaste$Line = function (a) {
+	return {$: 'Line', a: a};
+};
+var author$project$ViewPaste$NewComment = function (a) {
+	return {$: 'NewComment', a: a};
+};
+var elm$virtual_dom$VirtualDom$Custom = function (a) {
+	return {$: 'Custom', a: a};
+};
+var elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var elm$html$Html$Events$custom = F2(
+	function (event, decoder) {
+		return A2(
+			elm$virtual_dom$VirtualDom$on,
+			event,
+			elm$virtual_dom$VirtualDom$Custom(decoder));
+	});
+var author$project$ViewPaste$onClickNoBubble = function (message) {
+	return A2(
+		elm$html$Html$Events$custom,
+		'click',
+		elm$json$Json$Decode$succeed(
+			{message: message, preventDefault: true, stopPropagation: true}));
+};
+var elm$html$Html$a = _VirtualDom_node('a');
+var elm$html$Html$td = _VirtualDom_node('td');
+var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
+var elm$html$Html$th = _VirtualDom_node('th');
+var elm$html$Html$tr = _VirtualDom_node('tr');
+var elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			elm$json$Json$Encode$string(string));
+	});
+var elm$html$Html$Attributes$href = function (url) {
+	return A2(
+		elm$html$Html$Attributes$stringProperty,
+		'href',
+		_VirtualDom_noJavaScriptUri(url));
+};
+var author$project$ViewPaste$viewLine = F2(
+	function (lno, line) {
+		var lno_str = elm$core$String$fromInt(lno);
+		return A2(
+			elm$html$Html$tr,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$th,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A2(
+							elm$html$Html$a,
+							_List_fromArray(
+								[
+									elm$html$Html$Attributes$href(''),
+									author$project$ViewPaste$onClickNoBubble(
+									author$project$ViewPaste$NewComment(
+										author$project$ViewPaste$Line(lno)))
+								]),
+							_List_fromArray(
+								[
+									elm$html$Html$text(lno_str)
+								]))
+						])),
+					A2(
+					elm$html$Html$td,
+					_List_Nil,
+					_List_fromArray(
+						[
+							elm$html$Html$text(line)
+						]))
+				]));
+	});
+var elm$html$Html$div = _VirtualDom_node('div');
+var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
+var elm$html$Html$Attributes$colspan = function (n) {
+	return A2(
+		_VirtualDom_attribute,
+		'colspan',
+		elm$core$String$fromInt(n));
+};
+var author$project$ViewPaste$viewLineComment = function (comment) {
+	return A2(
+		elm$html$Html$tr,
+		_List_fromArray(
+			[
+				elm$html$Html$Attributes$class('bg-info')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				elm$html$Html$td,
+				_List_fromArray(
+					[
+						elm$html$Html$Attributes$colspan(2)
+					]),
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$div,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text(comment.body)
+							]))
+					]))
+			]));
+};
+var author$project$ViewPaste$MkComment = {$: 'MkComment'};
+var author$project$ViewPaste$SetCommentData = function (a) {
+	return {$: 'SetCommentData', a: a};
+};
+var elm$html$Html$br = _VirtualDom_node('br');
+var elm$html$Html$button = _VirtualDom_node('button');
+var elm$html$Html$textarea = _VirtualDom_node('textarea');
+var elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var elm$html$Html$Attributes$style = elm$virtual_dom$VirtualDom$style;
+var elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 'Normal', a: a};
+};
+var elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			elm$virtual_dom$VirtualDom$on,
+			event,
+			elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		elm$html$Html$Events$on,
+		'click',
+		elm$json$Json$Decode$succeed(msg));
+};
+var elm$html$Html$Events$alwaysStop = function (x) {
+	return _Utils_Tuple2(x, true);
+};
+var elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
+	return {$: 'MayStopPropagation', a: a};
+};
+var elm$html$Html$Events$stopPropagationOn = F2(
+	function (event, decoder) {
+		return A2(
+			elm$virtual_dom$VirtualDom$on,
+			event,
+			elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
+	});
+var elm$json$Json$Decode$at = F2(
+	function (fields, decoder) {
+		return A3(elm$core$List$foldr, elm$json$Json$Decode$field, decoder, fields);
+	});
+var elm$html$Html$Events$targetValue = A2(
+	elm$json$Json$Decode$at,
+	_List_fromArray(
+		['target', 'value']),
+	elm$json$Json$Decode$string);
+var elm$html$Html$Events$onInput = function (tagger) {
+	return A2(
+		elm$html$Html$Events$stopPropagationOn,
+		'input',
+		A2(
+			elm$json$Json$Decode$map,
+			elm$html$Html$Events$alwaysStop,
+			A2(elm$json$Json$Decode$map, tagger, elm$html$Html$Events$targetValue)));
+};
+var author$project$ViewPaste$viewCommentTextBox = function (maybeComment) {
+	return A2(
+		elm$html$Html$tr,
+		_List_fromArray(
+			[
+				elm$html$Html$Attributes$class('foo')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				elm$html$Html$td,
+				_List_fromArray(
+					[
+						elm$html$Html$Attributes$colspan(2)
+					]),
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$div,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2(
+								elm$html$Html$textarea,
+								_List_fromArray(
+									[
+										elm$html$Html$Attributes$class('text-white'),
+										elm$html$Html$Events$onInput(author$project$ViewPaste$SetCommentData),
+										A2(elm$html$Html$Attributes$style, 'background', '0 0'),
+										A2(elm$html$Html$Attributes$style, 'border', '0')
+									]),
+								A2(
+									elm$core$Maybe$withDefault,
+									_List_Nil,
+									A2(
+										elm$core$Maybe$map,
+										function (cmt) {
+											return _List_fromArray(
+												[
+													elm$html$Html$text(cmt.body)
+												]);
+										},
+										maybeComment))),
+								A2(elm$html$Html$br, _List_Nil, _List_Nil),
+								A2(
+								elm$html$Html$button,
+								_List_fromArray(
+									[
+										elm$html$Html$Attributes$class('btn'),
+										elm$html$Html$Events$onClick(author$project$ViewPaste$MkComment)
+									]),
+								_List_fromArray(
+									[
+										elm$html$Html$text('Save')
+									]))
+							]))
+					]))
+			]));
+};
+var author$project$ViewPaste$viewNewComment = F3(
+	function (lno, maybeAnchor, maybeComment) {
+		var anchorLine = A2(elm$core$Maybe$map, author$project$ViewPaste$lineNumForAnchor, maybeAnchor);
+		return _Utils_eq(
+			anchorLine,
+			elm$core$Maybe$Just(lno)) ? _List_fromArray(
+			[
+				author$project$ViewPaste$viewCommentTextBox(maybeComment)
+			]) : _List_Nil;
+	});
+var author$project$ViewPaste$viewLineWithComments = F4(
+	function (maybeAnchor, maybeComment, lno, lineWithComments) {
+		return A2(
+			elm$core$List$cons,
+			A2(author$project$ViewPaste$viewLine, lno, lineWithComments.line),
+			_Utils_ap(
+				A3(author$project$ViewPaste$viewNewComment, lno, maybeAnchor, maybeComment),
+				A2(elm$core$List$map, author$project$ViewPaste$viewLineComment, lineWithComments.lineComments)));
+	});
+var elm$core$List$append = F2(
+	function (xs, ys) {
+		if (!ys.b) {
+			return xs;
+		} else {
+			return A3(elm$core$List$foldr, elm$core$List$cons, ys, xs);
+		}
+	});
+var elm$core$List$concat = function (lists) {
+	return A3(elm$core$List$foldr, elm$core$List$append, _List_Nil, lists);
+};
+var author$project$ViewPaste$viewPasteBody = function (root) {
+	var f = A2(author$project$ViewPaste$viewLineWithComments, root.commentAnchor, root.newComment);
+	return elm$core$List$concat(
+		A2(elm$core$List$indexedMap, f, root.paste.lines));
+};
+var elm$html$Html$table = _VirtualDom_node('table');
+var elm$html$Html$tbody = _VirtualDom_node('tbody');
+var elm$html$Html$thead = _VirtualDom_node('thead');
+var elm$html$Html$Attributes$id = elm$html$Html$Attributes$stringProperty('id');
+var author$project$ViewPaste$viewPaste = function (root) {
+	return A2(
+		elm$html$Html$div,
+		_List_fromArray(
+			[
+				elm$html$Html$Attributes$id('paste_content'),
+				elm$html$Html$Attributes$class('table-responsive')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				elm$html$Html$table,
+				_List_fromArray(
+					[
+						elm$html$Html$Attributes$class('table table-dark table-sm'),
+						A2(elm$html$Html$Attributes$style, 'width', '100%')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$thead,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2(
+								elm$html$Html$tr,
+								_List_Nil,
+								_List_fromArray(
+									[
+										A2(
+										elm$html$Html$th,
+										_List_Nil,
+										_List_fromArray(
+											[
+												elm$html$Html$text('#')
+											])),
+										A2(
+										elm$html$Html$th,
+										_List_Nil,
+										_List_fromArray(
+											[
+												elm$html$Html$text('Paste')
+											]))
+									]))
+							])),
+						A2(
+						elm$html$Html$tbody,
+						_List_Nil,
+						author$project$ViewPaste$viewPasteBody(root))
+					]))
+			]));
+};
+var author$project$ViewPaste$view = function (model) {
+	return A2(
+		elm$html$Html$div,
+		_List_fromArray(
+			[
+				elm$html$Html$Attributes$class('container')
+			]),
+		_List_fromArray(
+			[
+				function () {
+				switch (model.$) {
+					case 'Failure':
+						var s = model.a;
+						return A2(
+							elm$html$Html$div,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('Failed to load paste! - ' + s)
+								]));
+					case 'Loading':
+						return A2(
+							elm$html$Html$div,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('Loading ...')
+								]));
+					default:
+						var root = model.a;
+						return author$project$ViewPaste$viewPaste(root);
+				}
+			}()
+			]));
+};
+var author$project$ViewPaste$viewDoc = function (model) {
+	return {
+		body: _List_fromArray(
+			[
+				author$project$ViewPaste$view(model)
+			]),
+		title: 'View paste'
+	};
+};
 var elm$browser$Browser$application = _Browser_application;
 var author$project$ViewPaste$main = elm$browser$Browser$application(
-	{init: author$project$ViewPaste$init, onUrlChange: author$project$ViewPaste$onUrlChange, onUrlRequest: author$project$ViewPaste$onUrlRequest, subscriptions: author$project$ViewPaste$subscriptions, update: author$project$ViewPaste$update, view: author$project$ViewPaste$viewDoc});
+	{init: author$project$ViewPaste$init, onUrlChange: author$project$ViewPaste$onUrlChange, onUrlRequest: author$project$ViewPaste$ClickedLink, subscriptions: author$project$ViewPaste$subscriptions, update: author$project$ViewPaste$update, view: author$project$ViewPaste$viewDoc});
 _Platform_export({'ViewPaste':{'init':author$project$ViewPaste$main(
 	elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));
