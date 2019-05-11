@@ -64,3 +64,21 @@ curl -X POST -d '"This is a line comment!"' -H 'Accept: application/json' -H 'Co
   ]
 }
 ```
+
+## Database setup
+
+Pre-requirements -
+  - docker
+  - libpqxx-devel (for pg_config, postgresql-devel might be sufficient)
+
+### Create a docker postgres container
+```
+docker run --name try-postgres-1 -d -p 5432:5432 \
+-v /home/sour/tmp/data:/var/lib/postgresql/data -e POSTGRES_PASSWORD=password \
+postgres
+
+```
+
+You should now be able to connect by providing a password to the
+`defaultConnectInfo` from `Database.PostgreSQL.Simple` in `postgresql-simple`
+
