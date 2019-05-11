@@ -39,6 +39,7 @@ executable review
                      , review
                      , warp
                      , wai-cors
+                     , wai-logger
   hs-source-dirs:      app
   default-language:    Haskell2010
 
