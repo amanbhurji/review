@@ -82,3 +82,64 @@ postgres
 You should now be able to connect by providing a password to the
 `defaultConnectInfo` from `Database.PostgreSQL.Simple` in `postgresql-simple`
 
+
+# Schema
+Paste is a collection of lines
+Line is text + any comments
+Comment is text
+
+--------
+
+Paste+Line
+pid
+lno
+text
+
+Comment
+pid
+lno
+cno
+text
+
+CREATE TABLE pastes (
+  pid UUID,
+  line_number SMALLINT NOT NULL,
+  line_text TEXT,
+  PRIMARY KEY (pid, line_number)
+);
+
+CREATE TABLE comments (
+  body TEXT NOT NULL,
+  comment_number SMALLINT NOT NULL,
+  line_number SMALLINT,
+  pid UUID,
+  PRIMARY KEY (pid, line_number, comment_number),
+  FOREIGN KEY (pid, line_number) REFERENCES pastes
+);
+
+---------
+
+Paste
+pid
+text
+
+Comment
+pid
+lno
+cno
+text
+
+CREATE TABLE pastes (
+  pid UUID PRIMARY KEY,
+  body Text NOT NULL
+);
+
+CREATE TABLE comments (
+  line_number SMALLINT NOT NULL,
+  comment_number SMALLINT NOT NULL,
+  body TEXT NOT NULL,
+  pid UUID REFERENCES pastes(pid) ON DELETE CASCADE,
+  PRIMARY KEY (pid, line_number, comment_number)
+);
+--------
+

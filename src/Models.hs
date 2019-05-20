@@ -2,7 +2,7 @@
 {-# LANGUAGE RecordWildCards    #-}
 {-# LANGUAGE OverloadedStrings  #-}
 
-module Models 
+module Models
   ( Paste
   , PasteId
   -- make a smart constructor which only creates LineNumbers for lines

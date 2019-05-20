@@ -2,7 +2,7 @@
 
 module Main where
 
-import DbPostgresqlSimple (testConnection)
+import Db.PostgresqlSimple (testConnection)
 
 main :: IO ()
 main = testConnection
