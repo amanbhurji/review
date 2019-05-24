@@ -10,14 +10,14 @@ import qualified Hasql.Decoders as Decoders
 import qualified Hasql.Encoders as Encoders
 import qualified Hasql.Statement as Stmt
 import qualified Hasql.Session as Session
-import           Db.SqlStmts (createDbSql, createPastesTableSql, createCommentsTableSql, insertPastePrepared, insertCommentPrepared)
+import           Db.SqlStmts (createDbSql, createPastesTableSql, createCommentsTableSql, insertPastePrepared, insertCommentPrepared, selectPasteByPidSql, selectCommentsByPidSql)
 import qualified Db.Schemas as Schemas
 
 dbsettings = Conn.settings "localhost" 5432 "postgres" "password" "pastes"
 
 dbconn = Conn.acquire dbsettings
 
-insertPaste =
+insertPasteStmt =
   Stmt.Statement insertPastePrepared encoder decoder True
     where
       encoder =
@@ -26,9 +26,9 @@ insertPaste =
       decoder =
         Decoders.unit
 
-insertPasteSession paste = Session.statement paste insertPaste
+insertPasteSession paste = Session.statement paste insertPasteStmt
 
-insertComment =
+insertCommentStmt =
   Stmt.Statement insertCommentPrepared encoder decoder True
     where
       -- Order of elements should be same as in insertCommentPrepared
@@ -40,7 +40,34 @@ insertComment =
       decoder =
         Decoders.unit
 
-insertCommentSession comment = Session.statement comment insertComment
+insertCommentSession comment = Session.statement comment insertCommentStmt
+
+selectPasteByPidStmt =
+  Stmt.Statement selectPasteByPidSql encoder decoder True
+    where
+      encoder =
+        Encoders.param Encoders.uuid
+      decoder =
+        Decoders.singleRow
+          (Schemas.Paste <$> Decoders.column Decoders.uuid <*>
+            Decoders.column Decoders.text)
+
+selectPasteByPidSession pid = Session.statement pid selectPasteByPidStmt
+
+selectCommentsByPidStmt =
+  Stmt.Statement selectCommentsByPidSql encoder decoder True
+    where
+      encoder =
+        Encoders.param Encoders.uuid
+      decoder =
+        Decoders.rowVector
+          (Schemas.Comment <$>
+            Decoders.column Decoders.uuid <*>
+            Decoders.column Decoders.int2 <*>
+            Decoders.column Decoders.int2 <*>
+            Decoders.column Decoders.text)
+
+selectCommentsByPidSession pid = Session.statement pid selectCommentsByPidStmt
 
 {- Can't connect to pastes db if it doesn't exist.
    Too much work to first create a connection to create pastes

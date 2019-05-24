@@ -22,15 +22,12 @@ insertPastePrepared = "INSERT INTO pastes ( pid, body ) VALUES ( $1, $2 )"
 insertCommentPrepared :: S.IsString a => a
 insertCommentPrepared = "INSERT INTO comments ( pid, line_number, comment_number, body ) VALUES ( $1, $2, $3, $4 )"
 
-selectByPid :: (Semigroup a, S.IsString a) => a -> a
-selectByPid tableName = "SELECT * FROM " <> tableName <> " WHERE pid=$1"
+selectPasteByPidSql :: (Semigroup a, S.IsString a) => a
+selectPasteByPidSql = "SELECT pid, body FROM pastes WHERE pid=$1"
 
-selectPasteByPid :: (Semigroup a, S.IsString a) => a
-selectPasteByPid = selectByPid "pastes"
+selectCommentsByPidSql :: (Semigroup a, S.IsString a) => a
+selectCommentsByPidSql = "SELECT pid, line_number, comment_number, body FROM comments WHERE pid=$1"
 
-selectCommentsByPid :: (Semigroup a, S.IsString a) => a
-selectCommentsByPid = selectByPid "comments"
-
-selectPasteWithComments :: S.IsString a => a
-selectPasteWithComments = "SELECT * FROM pastes p LEFT OUTER JOIN comments c ON p.pid = c.pid WHERE p.pid=$1;"
+selectPasteWithCommentsSql :: S.IsString a => a
+selectPasteWithCommentsSql = "SELECT * FROM pastes p LEFT OUTER JOIN comments c ON p.pid = c.pid WHERE p.pid=$1;"
 
