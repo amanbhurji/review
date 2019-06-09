@@ -20,7 +20,6 @@ library
                      , Server
                      , Db
                      , PostgresApi
-                     , Db.PostgresqlSimple
                      , Db.Hasql
                      , Db.SqlStmts
                      , Db.Schemas
@@ -48,14 +47,6 @@ executable review
                      , warp
                      , wai-cors
                      , wai-logger
-  hs-source-dirs:      app
-  default-language:    Haskell2010
-
-executable testdb
-  main-is:             TestDb.hs
-  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  build-depends:       base ^>=4.12.0.0
-                     , review
   hs-source-dirs:      app
   default-language:    Haskell2010
 
