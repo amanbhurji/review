@@ -1,8 +1,8 @@
 module Db.Schemas where
 
-import qualified Data.UUID      as DU
-import qualified Data.Text      as T
-import           GHC.Int
+import qualified Data.UUID as DU
+import qualified Data.Text as T
+import           Data.Int (Int16)
 
 data Paste = Paste
   { p_pid :: DU.UUID

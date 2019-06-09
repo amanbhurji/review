@@ -6,13 +6,6 @@ import Database.PostgreSQL.Simple
 import Control.Monad
 import Control.Applicative
 
-{-
-makeDb :: [Paste] -> IO Db
-writeToDb :: Db -> Paste -> IO ()
-lookupPaste :: Eq t => t -> (Paste -> t) -> Db -> IO (Maybe Paste)
-debugShowDb :: Db -> IO ()
--}
-
 testConnection = do
   conn <- connect defaultConnectInfo {
     connectPassword = "password"

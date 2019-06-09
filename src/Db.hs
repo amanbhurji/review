@@ -1,9 +1,13 @@
+{- Not used anymore.
+   In memory database backed by a IORef
+-}
 module Db where
 
-import qualified Data.Maybe                    as Maybe
-import qualified Data.IORef                    as I
-import           Data.Foldable                  ( find )
-import           Models
+import qualified Data.Maybe as Maybe
+import qualified Data.IORef as I
+import           Data.Foldable ( find )
+
+import           Models (Paste)
 
 newtype Db = Db { allPastes :: I.IORef [Paste] }
 

@@ -11,14 +11,15 @@ module Models
   , newPaste
   , newComment
   , pasteId
+  , newPasteWithUUID
   ) where
 
-import           Control.Lens   ((^?), (&), (.~), ix)
-import qualified Data.Maybe     as M
-import qualified Data.UUID      as DU
-import           Data.UUID.V4   (nextRandom)
+import           Control.Lens ((^?), (&), (.~), ix)
+import qualified Data.Maybe as M
+import qualified Data.UUID as DU
+import           Data.UUID.V4 (nextRandom)
 import           Data.Aeson
-import qualified Data.Text      as T
+import qualified Data.Text as T
 import           GHC.Generics
 
 data Paste = Paste
